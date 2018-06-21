@@ -45,7 +45,9 @@ class _SegmentControlState extends State<SegmentControl>
   }
 
   void _changeTab(String title) {
-    widget.onChange(_activeTabIndex);
+    if (widget.onChange != null){
+      widget.onChange(_activeTabIndex);
+    }
     setState(() {
       for (int i = 0; i < widget.tabs.length; i++) {
         SegmentControlItem t = widget.tabs[i];
@@ -94,7 +96,8 @@ class _SegmentControlState extends State<SegmentControl>
 
 class _SegmentControlItem extends StatefulWidget {
   _SegmentControlItem(this.callbacks, this.buttonTab, this.place, this.isActive,
-      {this.color = CupertinoColors.activeBlue,radius = 3.0,
+      {this.color = CupertinoColors.activeBlue,radius = 3.0, this.padding = const EdgeInsets.symmetric(vertical: 8.0,
+      horizontal: 13.0),
       this.inverseColor = CupertinoColors.white}): _defaultBorderRadius = radius;
 
   final double _defaultBorderRadius;
@@ -105,6 +108,7 @@ class _SegmentControlItem extends StatefulWidget {
   final bool isActive;
   final Color color;
   final Color inverseColor;
+  final EdgeInsets padding;
 
   @override
   State createState() {
@@ -187,7 +191,7 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
       },
       child: new Container(
         decoration: _boxDecoration(widget.place),
-        padding: new EdgeInsets.fromLTRB(20.0, 4.0, 20.0, 4.0),
+        padding: widget.padding,
         child: new Text(
           widget.buttonTab.title,
           style: new TextStyle(color: widget.isActive ? inverseColor : color),
