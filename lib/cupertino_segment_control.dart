@@ -15,13 +15,17 @@ abstract class SegmentControlCallbacks {
   void _changeTab(String title);
 }
 
+
 class SegmentControl extends StatefulWidget {
-  SegmentControl(this.tabs, {this.activeTabIndex = 0})
+  SegmentControl(this.tabs, {this.activeTabIndex = 0, this.onChange, this.color, this.radius})
       : assert(tabs.length > 1 && tabs.length <= 3),
         assert(activeTabIndex <= tabs.length - 1);
 
   final List<SegmentControlItem> tabs;
   final int activeTabIndex;
+  final Function onChange;
+  final Color color;
+  final double radius;
 
   @override
   _SegmentControlState createState() => new _SegmentControlState();
@@ -41,6 +45,7 @@ class _SegmentControlState extends State<SegmentControl>
   }
 
   void _changeTab(String title) {
+    widget.onChange(_activeTabIndex);
     setState(() {
       for (int i = 0; i < widget.tabs.length; i++) {
         SegmentControlItem t = widget.tabs[i];
@@ -68,7 +73,7 @@ class _SegmentControlState extends State<SegmentControl>
         place = _ButtonPlace.middle;
       }
 
-      list.add(new _SegmentControlItem(this, tap, place, isActive));
+      list.add(new _SegmentControlItem(this, tap, place, isActive, color: widget.color, radius: widget.radius));
     }
 
     return new Column(
@@ -89,10 +94,10 @@ class _SegmentControlState extends State<SegmentControl>
 
 class _SegmentControlItem extends StatefulWidget {
   _SegmentControlItem(this.callbacks, this.buttonTab, this.place, this.isActive,
-      {this.color = CupertinoColors.activeBlue,
-      this.inverseColor = CupertinoColors.white});
+      {this.color = CupertinoColors.activeBlue,radius = 3.0,
+      this.inverseColor = CupertinoColors.white}): _defaultBorderRadius = radius;
 
-  final double _defaultBorderRadius = 3.0;
+  final double _defaultBorderRadius;
 
   final SegmentControlItem buttonTab;
   final SegmentControlCallbacks callbacks;
