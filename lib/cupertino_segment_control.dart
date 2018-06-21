@@ -81,13 +81,10 @@ class _SegmentControlState extends State<SegmentControl>
     return new Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        new Padding(
-          child: new Row(
+        new Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: list,
           ),
-          padding: new EdgeInsets.all(12.0),
-        ),
         activeTab,
       ],
     );
