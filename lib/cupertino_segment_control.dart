@@ -15,6 +15,7 @@ abstract class SegmentControlCallbacks {
   void _changeTab(String title);
 }
 
+typedef void OnChangeCallback(int index);
 
 class SegmentControl extends StatefulWidget {
   SegmentControl(this.tabs, {this.activeTabIndex = 0, this.onChange, this.color, this.radius})
@@ -23,7 +24,7 @@ class SegmentControl extends StatefulWidget {
 
   final List<SegmentControlItem> tabs;
   final int activeTabIndex;
-  final Function onChange;
+  final OnChangeCallback onChange;
   final Color color;
   final double radius;
 
