@@ -46,15 +46,15 @@ class _SegmentControlState extends State<SegmentControl>
   }
 
   void _changeTab(String title) {
-    if (widget.onChange != null){
-      widget.onChange(_activeTabIndex);
-    }
     setState(() {
       for (int i = 0; i < widget.tabs.length; i++) {
         SegmentControlItem t = widget.tabs[i];
         if (t.title == title) {
           _activeTabIndex = i;
         }
+      }
+      if (widget.onChange != null){
+        widget.onChange(_activeTabIndex);
       }
     });
   }
