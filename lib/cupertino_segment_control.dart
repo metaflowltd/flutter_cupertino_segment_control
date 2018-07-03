@@ -18,9 +18,8 @@ abstract class SegmentControlCallbacks {
 typedef void OnChangeCallback(int index);
 
 class SegmentControl extends StatefulWidget {
-  SegmentControl(this.tabs, {this.activeTabIndex = 0, this.onChange, this.color, this.radius})
-      : assert(tabs.length > 1 && tabs.length <= 3),
-        assert(activeTabIndex <= tabs.length - 1);
+  SegmentControl(this.tabs, {this.activeTabIndex, this.onChange, this.color, this.radius})
+      : assert(tabs.length > 1 && tabs.length <= 3);
 
   final List<SegmentControlItem> tabs;
   final int activeTabIndex;
@@ -61,13 +60,16 @@ class _SegmentControlState extends State<SegmentControl>
 
   @override
   Widget build(BuildContext context) {
-    Widget activeTab = widget.tabs[_activeTabIndex].content;
+    Widget activeTab = _activeTabIndex == null ? Container() : widget.tabs[_activeTabIndex].content;
 
     List<_SegmentControlItem> list = <_SegmentControlItem>[];
 
     for (int i = 0; i < widget.tabs.length; i++) {
       SegmentControlItem tap = widget.tabs[i];
-      bool isActive = tap == widget.tabs[_activeTabIndex];
+      bool isActive = false;
+      if (_activeTabIndex != null ){
+        isActive = tap == widget.tabs[_activeTabIndex];
+      }
       _ButtonPlace place = _ButtonPlace.start;
 
       if (i > 0 && (widget.tabs.length - 1 == i)) {
