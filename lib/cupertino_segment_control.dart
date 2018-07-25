@@ -20,7 +20,7 @@ typedef void OnChangeCallback(int index);
 class SegmentControl extends StatefulWidget {
   ;
 
-  SegmentControl(this.tabs, {this.activeTabIndex, this.onChange, this.color, this.radius, this.stickySelection = false})
+  SegmentControl(this.tabs, {this.activeTabIndex, this.onChange, this.color, this.radius, this.stickySelection = true})
       : assert(tabs.length > 1 && tabs.length <= 3);
 
   final List<SegmentControlItem> tabs;
@@ -150,7 +150,7 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
     }
 
     BoxDecoration dec = new BoxDecoration(
-      color: widget.isActive && !widget.stickySelection ? color : inverseColor,
+      color: widget.isActive && widget.stickySelection ? color : inverseColor,
       border: place == _ButtonPlace.middle
           ? new Border(
               top: new BorderSide(color: tapDown ? inverseColor : color),
@@ -200,7 +200,7 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
         padding: widget.padding,
         child: new Text(
           widget.buttonTab.title,
-          style: new TextStyle(color: widget.isActive && !widget.stickySelection ? inverseColor : color),
+          style: new TextStyle(color: widget.isActive && widget.stickySelection ? inverseColor : color),
         ),
       ),
     );
