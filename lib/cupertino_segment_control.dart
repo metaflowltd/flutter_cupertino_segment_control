@@ -18,7 +18,9 @@ abstract class SegmentControlCallbacks {
 typedef void OnChangeCallback(int index);
 
 class SegmentControl extends StatefulWidget {
-  SegmentControl(this.tabs, {this.activeTabIndex, this.onChange, this.color, this.radius})
+  ;
+
+  SegmentControl(this.tabs, {this.activeTabIndex, this.onChange, this.color, this.radius, this.stickySelection = false})
       : assert(tabs.length > 1 && tabs.length <= 3);
 
   final List<SegmentControlItem> tabs;
@@ -26,13 +28,13 @@ class SegmentControl extends StatefulWidget {
   final OnChangeCallback onChange;
   final Color color;
   final double radius;
+  final bool stickySelection;
 
   @override
   _SegmentControlState createState() => new _SegmentControlState();
 }
 
-class _SegmentControlState extends State<SegmentControl>
-    with SegmentControlCallbacks {
+class _SegmentControlState extends State<SegmentControl> with SegmentControlCallbacks {
   int _activeTabIndex;
 
   @override
@@ -52,7 +54,7 @@ class _SegmentControlState extends State<SegmentControl>
           _activeTabIndex = i;
         }
       }
-      if (widget.onChange != null){
+      if (widget.onChange != null) {
         widget.onChange(_activeTabIndex);
       }
     });
@@ -67,7 +69,7 @@ class _SegmentControlState extends State<SegmentControl>
     for (int i = 0; i < widget.tabs.length; i++) {
       SegmentControlItem tap = widget.tabs[i];
       bool isActive = false;
-      if (_activeTabIndex != null ){
+      if (_activeTabIndex != null) {
         isActive = tap == widget.tabs[_activeTabIndex];
       }
       _ButtonPlace place = _ButtonPlace.start;
@@ -78,16 +80,16 @@ class _SegmentControlState extends State<SegmentControl>
         place = _ButtonPlace.middle;
       }
 
-      list.add(new _SegmentControlItem(this, tap, place, isActive, color: widget.color, radius: widget.radius));
+      list.add(new _SegmentControlItem(this, tap, place, isActive, color: widget.color, radius: widget.radius, stickySelection: widget.stickySelection));
     }
 
     return new Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: list,
-          ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: list,
+        ),
         activeTab,
       ],
     );
@@ -96,9 +98,12 @@ class _SegmentControlState extends State<SegmentControl>
 
 class _SegmentControlItem extends StatefulWidget {
   _SegmentControlItem(this.callbacks, this.buttonTab, this.place, this.isActive,
-      {this.color = CupertinoColors.activeBlue,radius = 3.0, this.padding = const EdgeInsets.symmetric(vertical: 8.0,
-      horizontal: 13.0),
-      this.inverseColor = CupertinoColors.white}): _defaultBorderRadius = radius;
+      {this.stickySelection = false,
+      this.color = CupertinoColors.activeBlue,
+      radius = 3.0,
+      this.padding = const EdgeInsets.symmetric(vertical: 8.0, horizontal: 13.0),
+      this.inverseColor = CupertinoColors.white})
+      : _defaultBorderRadius = radius;
 
   final double _defaultBorderRadius;
 
@@ -109,6 +114,7 @@ class _SegmentControlItem extends StatefulWidget {
   final Color color;
   final Color inverseColor;
   final EdgeInsets padding;
+  final bool stickySelection;
 
   @override
   State createState() {
@@ -144,7 +150,7 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
     }
 
     BoxDecoration dec = new BoxDecoration(
-      color: widget.isActive ? color : inverseColor,
+      color: widget.isActive && !widget.stickySelection ? color : inverseColor,
       border: place == _ButtonPlace.middle
           ? new Border(
               top: new BorderSide(color: tapDown ? inverseColor : color),
@@ -194,7 +200,7 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
         padding: widget.padding,
         child: new Text(
           widget.buttonTab.title,
-          style: new TextStyle(color: widget.isActive ? inverseColor : color),
+          style: new TextStyle(color: widget.isActive && !widget.stickySelection ? inverseColor : color),
         ),
       ),
     );
