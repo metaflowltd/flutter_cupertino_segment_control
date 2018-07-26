@@ -81,7 +81,7 @@ class _SegmentControlState extends State<SegmentControl> with SegmentControlCall
       }
 
       list.add(new _SegmentControlItem(this, tap, place, isActive, color: widget.color, radius: widget.radius,
-        stickySelection: widget.stickySelection, isReadOnly: widget.isReadOnly, padding: EdgeInsets.symmetric(vertical: widget.stickySelection ? 3.0 : 8.0, horizontal: 13.0)));
+        stickySelection: widget.stickySelection, isReadOnly: widget.isReadOnly, padding: EdgeInsets.symmetric(vertical: widget.stickySelection ? 8.0 : 3.0, horizontal: 13.0)));
     }
 
     return new Column(
@@ -152,7 +152,7 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
     }
 
     BoxDecoration dec = new BoxDecoration(
-      color: widget.isActive && !widget.stickySelection ? color : inverseColor,
+      color: widget.isActive && widget.stickySelection ? color : inverseColor,
       border: place == _ButtonPlace.middle
           ? new Border(
               top: new BorderSide(color: tapDown ? inverseColor : color),
@@ -205,7 +205,7 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
         padding: widget.padding,
         child: new Text(
           widget.buttonTab.title,
-          style: new TextStyle(color: widget.isActive && !widget.stickySelection ? inverseColor : color),
+          style: new TextStyle(color: widget.isActive && widget.stickySelection ? inverseColor : color),
         ),
       ),
     );
