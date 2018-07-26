@@ -18,13 +18,8 @@ abstract class SegmentControlCallbacks {
 typedef void OnChangeCallback(int index);
 
 class SegmentControl extends StatefulWidget {
-  SegmentControl(this.tabs,
-      {this.activeTabIndex,
-      this.onChange,
-      this.color,
-      this.radius,
-      this.stickySelection = true,
-      this.isReadOnly = false})
+
+  SegmentControl(this.tabs, {this.activeTabIndex, this.onChange, this.color, this.radius, this.stickySelection = true, this.isReadOnly = false})
       : assert(tabs.length > 1 && tabs.length <= 3);
 
   final List<SegmentControlItem> tabs;
@@ -85,12 +80,8 @@ class _SegmentControlState extends State<SegmentControl> with SegmentControlCall
         place = _ButtonPlace.middle;
       }
 
-      list.add(new _SegmentControlItem(this, tap, place, isActive,
-          color: widget.color,
-          radius: widget.radius,
-          stickySelection: widget.stickySelection,
-          isReadOnly: widget.isReadOnly,
-          padding: EdgeInsets.symmetric(vertical: widget.stickySelection ? 3.0 : 8.0, horizontal: 13.0)));
+      list.add(new _SegmentControlItem(this, tap, place, isActive, color: widget.color, radius: widget.radius,
+        stickySelection: widget.stickySelection, isReadOnly: widget.isReadOnly, padding: EdgeInsets.symmetric(vertical: widget.stickySelection ? 3.0 : 8.0, horizontal: 13.0)));
     }
 
     return new Column(
@@ -108,12 +99,11 @@ class _SegmentControlState extends State<SegmentControl> with SegmentControlCall
 
 class _SegmentControlItem extends StatefulWidget {
   _SegmentControlItem(this.callbacks, this.buttonTab, this.place, this.isActive,
-      {this.stickySelection = false,
+      {this.stickySelection,
       this.color = CupertinoColors.activeBlue,
       radius = 3.0,
-      this.padding = const EdgeInsets.symmetric(vertical: 8.0, horizontal: 13.0),
-      this.inverseColor = CupertinoColors.white,
-      this.isReadOnly})
+      this.padding,
+      this.inverseColor = CupertinoColors.white, this.isReadOnly})
       : _defaultBorderRadius = radius;
 
   final double _defaultBorderRadius;
@@ -199,21 +189,15 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
   Widget build(BuildContext context) {
     return new GestureDetector(
       onTapDown: (_) {
-        if (widget.isReadOnly) {
-          return;
-        }
+        if (widget.isReadOnly) { return; }
         _tabDown();
       },
       onTapUp: (_) {
-        if (widget.isReadOnly) {
-          return;
-        }
+        if (widget.isReadOnly) { return; }
         _tabUp();
       },
       onTap: () {
-        if (widget.isReadOnly) {
-          return;
-        }
+        if (widget.isReadOnly) { return; }
         widget.callbacks._changeTab(widget.buttonTab.title);
       },
       child: new Container(
