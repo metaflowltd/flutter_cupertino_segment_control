@@ -18,7 +18,13 @@ abstract class SegmentControlCallbacks {
 typedef void OnChangeCallback(int index);
 
 class SegmentControl extends StatefulWidget {
-  SegmentControl(this.tabs, {this.activeTabIndex, this.onChange, this.color, this.radius, this.stickySelection = true})
+  SegmentControl(this.tabs,
+      {this.activeTabIndex,
+      this.onChange,
+      this.color,
+      this.radius,
+      this.stickySelection = true,
+      this.isReadOnly = false})
       : assert(tabs.length > 1 && tabs.length <= 3);
 
   final List<SegmentControlItem> tabs;
@@ -27,6 +33,7 @@ class SegmentControl extends StatefulWidget {
   final Color color;
   final double radius;
   final bool stickySelection;
+  final bool isReadOnly;
 
   @override
   _SegmentControlState createState() => new _SegmentControlState();
@@ -82,6 +89,7 @@ class _SegmentControlState extends State<SegmentControl> with SegmentControlCall
           color: widget.color,
           radius: widget.radius,
           stickySelection: widget.stickySelection,
+          isReadOnly: widget.isReadOnly,
           padding: EdgeInsets.symmetric(vertical: widget.stickySelection ? 3.0 : 8.0, horizontal: 13.0)));
     }
 
@@ -104,7 +112,8 @@ class _SegmentControlItem extends StatefulWidget {
       this.color = CupertinoColors.activeBlue,
       radius = 3.0,
       this.padding = const EdgeInsets.symmetric(vertical: 8.0, horizontal: 13.0),
-      this.inverseColor = CupertinoColors.white})
+      this.inverseColor = CupertinoColors.white,
+      this.isReadOnly})
       : _defaultBorderRadius = radius;
 
   final double _defaultBorderRadius;
@@ -117,6 +126,7 @@ class _SegmentControlItem extends StatefulWidget {
   final Color inverseColor;
   final EdgeInsets padding;
   final bool stickySelection;
+  final bool isReadOnly;
 
   @override
   State createState() {
@@ -189,12 +199,21 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
   Widget build(BuildContext context) {
     return new GestureDetector(
       onTapDown: (_) {
+        if (widget.isReadOnly) {
+          return;
+        }
         _tabDown();
       },
       onTapUp: (_) {
+        if (widget.isReadOnly) {
+          return;
+        }
         _tabUp();
       },
       onTap: () {
+        if (widget.isReadOnly) {
+          return;
+        }
         widget.callbacks._changeTab(widget.buttonTab.title);
       },
       child: new Container(
