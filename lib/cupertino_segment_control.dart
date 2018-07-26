@@ -18,8 +18,6 @@ abstract class SegmentControlCallbacks {
 typedef void OnChangeCallback(int index);
 
 class SegmentControl extends StatefulWidget {
-  ;
-
   SegmentControl(this.tabs, {this.activeTabIndex, this.onChange, this.color, this.radius, this.stickySelection = true})
       : assert(tabs.length > 1 && tabs.length <= 3);
 
@@ -80,7 +78,11 @@ class _SegmentControlState extends State<SegmentControl> with SegmentControlCall
         place = _ButtonPlace.middle;
       }
 
-      list.add(new _SegmentControlItem(this, tap, place, isActive, color: widget.color, radius: widget.radius, stickySelection: widget.stickySelection));
+      list.add(new _SegmentControlItem(this, tap, place, isActive,
+          color: widget.color,
+          radius: widget.radius,
+          stickySelection: widget.stickySelection,
+          padding: EdgeInsets.symmetric(vertical: widget.stickySelection ? 3.0 : 8.0, horizontal: 13.0)));
     }
 
     return new Column(
@@ -150,7 +152,7 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
     }
 
     BoxDecoration dec = new BoxDecoration(
-      color: widget.isActive && widget.stickySelection ? color : inverseColor,
+      color: widget.isActive && !widget.stickySelection ? color : inverseColor,
       border: place == _ButtonPlace.middle
           ? new Border(
               top: new BorderSide(color: tapDown ? inverseColor : color),
@@ -200,7 +202,7 @@ class _SegmentControlItemState extends State<_SegmentControlItem> {
         padding: widget.padding,
         child: new Text(
           widget.buttonTab.title,
-          style: new TextStyle(color: widget.isActive && widget.stickySelection ? inverseColor : color),
+          style: new TextStyle(color: widget.isActive && !widget.stickySelection ? inverseColor : color),
         ),
       ),
     );
